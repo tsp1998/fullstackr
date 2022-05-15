@@ -1,11 +1,7 @@
-import express, { RequestHandler } from 'express'
+import express, { RequestHandler, ErrorRequestHandler } from 'express'
 import cors from 'cors'
-import createRouter from './routes/createRouter'
 import connectToMongoDB from './utils/connectToMongoDB'
-import users from './data/users.json'
-import fs from 'fs';
-import a from '../common'
-console.log(a)
+import {userRouter, usersRouter} from './routes/userRouter'
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -29,70 +25,19 @@ const tripleNameMiddleware: RequestHandler = (req, res, next) => {
     next()
 }
 
-const userRouter = createRouter({
-    '/:userId-get': {
-        controller: (req, res) => res.json(users.find((user: any) => user.id === req.params.userId)),
-        // controllerData: {
-        //     StorageClass: {},
-        //     methodData: {
-        //         customMethod: () => Promise.resolve('Shubham')
-        //     },
-        // },
-        idParamName: 'userId'
-    },
-    '/:userId-post': {
-        controller: (req, res) => {
-            fs.writeFileSync('./src/data/users.json', JSON.stringify([...users, req.body.user]), 'utf-8')
-            res.json(req.body.user)
-        },
-        // controllerData: {
-        //     StorageClass: {},
-        //     methodData: {
-        //         customMethod: () => Promise.resolve('Shubham Tandsle')
-        //     },
-        // },
-        idParamName: 'userId'
-    },
-    '/:userId-patch': {
-        controller: (req, res) => {
-            let u;
-            fs.writeFileSync(
-                './src/data/users.json',
-                JSON.stringify(users.map((user: any) => {
-                    if (user.id === req.params.userId) {
-                        u = { ...user, ...req.body.user }
-                        return u
-                    }
-                    return user
-                })),
-                'utf-8'
-            )
-            res.json(u)
-        },
-    },
-    '/:userId-delete': {
-        controller: (req, res) => {
-            fs.writeFileSync('./src/data/users.json', JSON.stringify(users.filter((user: any) => user.id !== req.params.userId)), 'utf-8')
-            res.json({})
-        },
-        // controllerData: {
-        //     StorageClass: {},
-        //     methodData: {
-        //         customMethod: () => Promise.resolve('Shubham Tandsle')
-        //     },
-        // },
-        idParamName: 'userId'
-    },
-})
-
-const usersRouter = createRouter({
-    '/-get': {
-        controller: (req, res) => res.json(users)
-    }
-})
-
 app.use('/api/user', userRouter);
 app.use('/api/users', usersRouter);
+
+
+app.use(((error: Error, req, res, next) => {
+    const statusCode = (error as any).statusCode || 404
+    const errorMessage = error.message || 'Something went wrong.';
+    res.status(statusCode).json({
+        status: 'error',
+        message: errorMessage,
+        stack: error.stack
+    })
+}) as ErrorRequestHandler)
 
 app.listen(PORT, () => {
     console.log(`App is listening on PORT ${PORT}`);

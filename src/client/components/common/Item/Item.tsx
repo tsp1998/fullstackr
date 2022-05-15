@@ -3,20 +3,19 @@ import { ItemPropsModel } from './Item.models'
 import * as ItemStyles from './Item.styles'
 
 const Item: FunctionComponent<ItemPropsModel> = (props): JSX.Element => {
-  const { propName = '', className = '', ...restProps } = props;
+  const { dataPropName = '', className = '', data: dataFromProps, ...restProps } = props;
+  let data: ListAndItemTypes.Item | JSX.Element = '';
   try {
-    return (
-      <ItemStyles.ItemStyled className={`item ${className}`} {...restProps}>
-        {
-          restProps.data[propName as keyof typeof restProps.data] ||
-          restProps.data
-        }
-      </ItemStyles.ItemStyled>
-    )
+    data = dataFromProps[dataPropName as keyof typeof dataFromProps]
   } catch (error) {
     console.log(`error`, (error as Error).message)
-    return <></>
   }
+  data = data || dataFromProps || ''
+  return data ? (
+    <ItemStyles.ItemStyled className={`item ${className}`} {...restProps}>
+      {data as JSX.Element}
+    </ItemStyles.ItemStyled>
+  ) : <></>
 }
 
 export default Item

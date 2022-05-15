@@ -14,6 +14,7 @@ const List: FunctionComponent<ListPropsModel> = (props): JSX.Element => {
     HeaderJSX,
     Header,
     heading,
+    dataPropName,
     ...restProps
   } = props;
 
@@ -21,12 +22,13 @@ const List: FunctionComponent<ListPropsModel> = (props): JSX.Element => {
     <ListStyles.ListStyled className={`list ${className}`} {...restProps}>
       <ListStyles.HeadingContainer className='list-heading-container'>
         {HeaderJSX || Header && <Header /> || (
-          <ListStyles.HeadingWrapper>{heading}</ListStyles.HeadingWrapper>
+          <ListStyles.HeadingWrapper className='list-heading-wrapper'>
+            {heading}
+          </ListStyles.HeadingWrapper>
         )}
       </ListStyles.HeadingContainer>
-      {loading && <Spinner />}
-      {!props.items.length ? <li>No Items</li> : props.items.map((item, i) => (
-        <Item key={i} {...item} />
+      {loading ? <Spinner /> : !props.items.length ? <li>No Items</li> : props.items.map((item, i) => (
+        <Item key={i} dataPropName={dataPropName} data={item} />
       ))}
     </ListStyles.ListStyled>
   )

@@ -1,16 +1,15 @@
 import { RequestHandler } from 'express'
-import * as listServices from '../services/list.services/list.services'
 
 exports.createGetListController = (
-  ModelClass: ModelModels.ModelType,
-  methodNameOrFunction: ModelModels.MethodNameOrFunctionType,
+  ModelClass: ControllerTypes.ModelClassType,
+  methodNameOrFunction: ControllerTypes.ModelClassMethodNameOrCustomMethod,
 ): RequestHandler => async (req, res, next) => {
   try {
     const { start = -1, end = -1, count = -1 } = req.query || {}
     const {  filter = {} } = req.params || {}
-    let items: Array<ItemModels.ItemType>
+    let items: ListAndItemTypes.List
     if (typeof methodNameOrFunction === 'function') {
-      items = await methodNameOrFunction(filter) as Array<ItemModels.ItemType>
+      items = await methodNameOrFunction(filter) as ListAndItemTypes.List
     } else {
       items = await ModelClass[methodNameOrFunction](filter)
     }

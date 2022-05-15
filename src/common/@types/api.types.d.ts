@@ -1,10 +1,7 @@
 declare namespace APITypes {
-  export type RequestType = 'get' | 'post' | 'patch' | 'delete';
+  export type RequestType = 'get' | 'post' | 'put' | 'patch' | 'delete';
   export type ResponseDataType = string | number | object | boolean;
-  export interface RequestBodyModel {
-    data?: ResponseDataType;
-    config?: any;
-  }
+  export type ApiFunctionParams<Data = any, Config = any> = [string, Data?, Config?];
   export interface ResponseModel {
     data?: ResponseDataType;
     status: 'success' | 'error';

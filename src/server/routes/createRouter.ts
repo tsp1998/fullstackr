@@ -1,8 +1,7 @@
 import { RequestHandler, Router } from 'express'
 import * as itemControllers from '../controllers/item.controllers'
 
-type RouteType = 'get' | 'post' | 'put' | 'patch' | 'delete'
-type RouteNameType = `${string}-${RouteType}`;
+type RouteNameType = `${string}-${APITypes.RequestType}`;
 interface RoutesMapModel {
   [route: RouteNameType]: {
     idParamName?: string;
@@ -29,12 +28,12 @@ const createRouter = (routesMap: RoutesMapModel): Router => {
   Object.keys(routesMap).forEach(route => {
     const [routeName, routeType] = (route as RouteNameType).split('-');
     const routeData = routesMap[route as RouteNameType];
-    router[routeType as RouteType](
+    router[routeType as APITypes.RequestType](
       routeName,
       ...(routeData.middlewares || []),
-      routeData.controller || createItemControllersMap[routeType as RouteType](
-        routeData.controllerData?.StorageClass,
-        routeData.controllerData?.methodData,
+      routeData.controller || createItemControllersMap[routeType as APITypes.RequestType](
+        routeData.controllerData?.StorageClass!,
+        routeData.controllerData?.methodData!,
         { idParamName: routeData.idParamName }
       )
     );

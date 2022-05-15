@@ -1,5 +1,5 @@
+//@ts-nocheck
 import { RequestHandler } from 'express'
-import * as itemServices from '../services/item.services/item.services'
 
 export const createGetItemController: CommonModels.CreateControllerFunctionType<RequestHandler> = (
   StorageClass, methodData = {}, optionalData = {}

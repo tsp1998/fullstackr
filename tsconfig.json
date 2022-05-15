@@ -14,9 +14,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "typeRoots": ["src/common/@types"]
   },
   "include": ["src"],
-  "exclude": ["src/server"],
+  "exclude": ["src/server", "src/client-cra", "node_modules", "node_modules_cra"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

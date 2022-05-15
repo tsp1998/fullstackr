@@ -5,6 +5,7 @@ export interface ListPropsModel extends ComponentPropsWithRef<'ul'> {
   heading?: string;
   Header?: React.ElementType<any>
   HeaderJSX?: JSX.Element;
-  items: Array<ItemPropsModel>;
+  items: Array<ListAndItemTypes.Item | JSX.Element>;
+  dataPropName?: string;
   loading?: boolean;
 }

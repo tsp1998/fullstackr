@@ -6,5 +6,7 @@ declare namespace CommonModels {
   export interface KeyValue<ValueType = any> {
     [key: string]: ValueType
   }
-  export type CreateControllerFunctionType<ReturnType = any> = (StorageClass: any, methodData: CommonModels.MethodData = {}, optionalData: CommonModels.KeyValue = {}) => ReturnType
+  export type CreateControllerFunctionType<ReturnType = any> = (
+    StorageClass: any, methodData: MethodData, optionalData: KeyValue
+  ) => ReturnType
 }
