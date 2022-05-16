@@ -1,8 +1,6 @@
 {
-  "include": [
-    "./src/**/*"
-  ],
-  "exclude": ["node_modules", "node_modules_cra"],
+  "include": ["./src/**/*"],
+  "exclude": ["src/client", "src/server", "node_modules", "node_modules_cra"],
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,

@@ -3,7 +3,7 @@ import restApi from '../apis/rest'
 
 interface RequestFunctionParams {
   requestType: APITypes.RequestType,
-  dataType?: 'list' | 'item',
+  dataType?: ListAndItemTypes.DataType,
   requestBody: APITypes.RequestBody
 }
 

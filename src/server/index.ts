@@ -1,7 +1,7 @@
 import express, { RequestHandler, ErrorRequestHandler } from 'express'
 import cors from 'cors'
-import connectToMongoDB from './utils/connectToMongoDB'
-import {userRouter, usersRouter} from './routes/userRouter'
+import connectToMongoDB from './db/connectToMongoDB'
+import { userRouter, usersRouter } from './routes/userRouter'
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -38,6 +38,12 @@ app.use(((error: Error, req, res, next) => {
         stack: error.stack
     })
 }) as ErrorRequestHandler)
+
+connectToMongoDB({ local: true, MONGO_DB_NAME: 'fullstackr' }).then(disconnectFunction => {
+    console.log('connected to database');
+}).catch(error => {
+    console.log(`error`, error)
+})
 
 app.listen(PORT, () => {
     console.log(`App is listening on PORT ${PORT}`);
