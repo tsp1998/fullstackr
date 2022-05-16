@@ -4,7 +4,7 @@ import restApi from '../apis/rest'
 interface RequestFunctionParams {
   requestType: APITypes.RequestType,
   dataType?: 'list' | 'item',
-  apiFunctionParams: APITypes.ApiFunctionParams
+  requestBody: APITypes.RequestBody
 }
 
 const useRequest = <DataType = any>() => {
@@ -13,10 +13,10 @@ const useRequest = <DataType = any>() => {
   const [errorMessage, setErrorMessage] = useState('')
 
   const request = useCallback(async (
-    { requestType, dataType, apiFunctionParams }: RequestFunctionParams
+    { requestType, dataType, requestBody }: RequestFunctionParams
   ): Promise<APITypes.ResponseDataType | null> => {
     setLoading(true);
-    const response = await restApi(requestType, ...apiFunctionParams)
+    const response = await restApi(requestType, requestBody)
     if (response?.status === 'success') {
       setData(response.data)
       setLoading(false)
@@ -29,7 +29,7 @@ const useRequest = <DataType = any>() => {
     }
   }, [])
 
-  return { data: data as DataType, loading, errorMessage, setErrorMessage, request }
+  return { data: data as DataType, loading, errorMessage, setErrorMessage, setLoading, request }
 }
 
 export default useRequest;

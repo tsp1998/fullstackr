@@ -16,7 +16,7 @@ export const userRouter = createRouter({
     // },
     idParamName: 'userId'
   },
-  '/:userId-post': {
+  '/': {
     controller: (req, res) => {
       fs.writeFileSync(usersFilePath, JSON.stringify([...users, req.body.data]), 'utf-8')
       res.json(req.body.data)
@@ -32,15 +32,17 @@ export const userRouter = createRouter({
   '/:userId-patch': {
     controller: (req, res) => {
       let u;
+      let updatedUsers = users.map((user: any) => {
+        if (user.id === req.params.userId) {
+          u = { ...user, ...req.body.data }
+          return u
+        }
+        return user
+      })
+      console.log(`updatedUsers`, updatedUsers)
       fs.writeFileSync(
         usersFilePath,
-        JSON.stringify(users.map((user: any) => {
-          if (user.id === req.params.userId) {
-            u = { ...user, ...req.body.data }
-            return u
-          }
-          return user
-        })),
+        JSON.stringify(updatedUsers),
         'utf-8'
       )
       res.json(u)

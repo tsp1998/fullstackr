@@ -1,10 +1,17 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 
 const restApi = async (
-  requestType: APITypes.RequestType, ...params: APITypes.ApiFunctionParams
+  requestType: APITypes.RequestType,
+  requestBody: APITypes.RequestBody
+  // ...params: APITypes.ApiFunctionParams
 ): Promise<APITypes.ResponseModel> => {
   try {
-    const response = await axios[requestType](...params);
+    const params = [
+      requestBody.api,
+      ...(requestBody.data ? [requestBody.data] : []),
+      requestBody.config
+    ]
+    const response = await axios[requestType](...params as [string, any?, any?]);
     return { status: 'success', data: response.data }
   } catch (error) {
     const { response } = error as AxiosError;

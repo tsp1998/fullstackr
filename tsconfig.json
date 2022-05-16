@@ -15,7 +15,8 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "typeRoots": ["src/common/@types"]
+    "typeRoots": ["src/common/@types"],
+    "types": ["src/common/@types"]
   },
   "include": ["src"],
   "exclude": ["src/server", "src/client-cra", "node_modules", "node_modules_cra"],

@@ -2,16 +2,18 @@ import { RequestHandler, Router } from 'express'
 import * as itemControllers from '../controllers/item.controllers'
 
 type RouteNameType = `${string}-${APITypes.RequestType}`;
+interface RouteDataModel {
+  idParamName?: string;
+  controller?: RequestHandler;
+  controllerData?: {
+    StorageClass: any;
+    methodData?: CommonModels.MethodData;
+  },
+  middlewares?: Array<RequestHandler>;
+}
 interface RoutesMapModel {
-  [route: RouteNameType]: {
-    idParamName?: string;
-    controller?: RequestHandler;
-    controllerData?: {
-      StorageClass: any;
-      methodData?: CommonModels.MethodData;
-    },
-    middlewares?: Array<RequestHandler>;
-  }
+  '/'?: RouteDataModel;
+  [route: RouteNameType]: RouteDataModel;
 }
 
 const createRouter = (routesMap: RoutesMapModel): Router => {
@@ -26,7 +28,7 @@ const createRouter = (routesMap: RoutesMapModel): Router => {
     'delete': itemControllers.createDeleteItemController,
   }
   Object.keys(routesMap).forEach(route => {
-    const [routeName, routeType] = (route as RouteNameType).split('-');
+    const [routeName, routeType = 'post'] = (route as RouteNameType).split('-');
     const routeData = routesMap[route as RouteNameType];
     router[routeType as APITypes.RequestType](
       routeName,
