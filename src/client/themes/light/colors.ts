@@ -1,6 +1,6 @@
 const colors: ThemeModels.ThemeColorsModel = {
   primary: 'blue',
-  headerBackgroundColor: 'blue'
+  headerBackgroundColor: 'darkblue'
 }
 
 export default colors

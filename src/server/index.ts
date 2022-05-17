@@ -1,7 +1,9 @@
 import express, { RequestHandler, ErrorRequestHandler } from 'express'
 import cors from 'cors'
 import connectToMongoDB from './db/connectToMongoDB'
-import { userRouter, usersRouter } from './routes/userRouter'
+import fs from 'fs'
+import path from 'path'
+import routersGenerator from './routes/routersGenerator'
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -25,9 +27,28 @@ const tripleNameMiddleware: RequestHandler = (req, res, next) => {
     next()
 }
 
-app.use('/api/user', userRouter);
-app.use('/api/users', usersRouter);
+// app.use('/api/user', userRouter);
+// app.use('/api/users', usersRouter);
 
+const registerRouters = () => {
+    const artifactsFolderPath = path.resolve(__dirname, 'artifacts')
+    const files = fs.readdirSync(artifactsFolderPath);
+    files.forEach(file => {
+        if (file.endsWith('.js')) {
+            import(path.join(artifactsFolderPath, file)).then(content => {
+                const { default: artifactData } = content;
+                if (artifactData && artifactData.name) {
+                    const routers = routersGenerator(artifactData)
+                    routers.forEach(router => {
+                        app.use(`/api${router.path}`, router.router)
+                    })
+                }
+            })
+        }
+    })
+}
+
+registerRouters()
 
 app.use(((error: Error, req, res, next) => {
     const statusCode = (error as any).statusCode || 404

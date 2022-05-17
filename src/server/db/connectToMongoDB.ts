@@ -13,7 +13,7 @@ async function connectToMongoDB({
   MONGO_DB_USER = process.env.MONGO_DB_USER,
   MONGO_DB_PASSWORD = process.env.MONGO_DB_PASSWORD,
   MONGO_DB_NAME = process.env.MONGO_DB_NAME,
-  local = true
+  local = false
 }: ConnectToMongoDBParams = {}): Promise<MongoDBDisconnectFunctionType>  {
   return new Promise((resolve, reject) => {
     const connectionString = local ? `mongodb://localhost:27017/${MONGO_DB_NAME}` : `

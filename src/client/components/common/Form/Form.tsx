@@ -8,12 +8,16 @@ import createItemReducer from '../../../redux/common/item/createItemReducer'
 import * as itemNormalActions from '../../../redux/common/item/item.normal.actions'
 //components
 import Input from '../Input/Input'
+import Textarea from '../Textarea/Textarea'
+import Select from '../Select/Select'
 import Button from '../Button/Button'
 //hooks
 import useRequest from '../../../hooks/useRequest';
 
 const inputComponents = {
-  input: Input
+  input: Input,
+  select: Select,
+  textarea: Textarea,
 }
 
 const trimFormState = (formState: FormModels.FormState): FormModels.TrimmedFormState => {
@@ -49,18 +53,13 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
     }))
   }, [])
 
-  // console.log(`formState`, formState)
-  console.log(`data`, data)
-  console.log(`loading`, loading)
-  console.log(`errorMessage`, errorMessage)
-
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       if (api) {
         await request({
           requestType: 'post',
-          requestBody: { api, data: { data: trimFormState(formState)} }
+          requestBody: { api, data: { data: trimFormState(formState) } }
         })
       } else {
         setLoading(true);
@@ -77,17 +76,23 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
     <FormStyles.FormStyled onSubmit={submitHandler} className={`form ${className}`} {...restProps}>
       <FormStyles.FormInputsContainer className='form-inputs-container'>
         {inputs.map(input => {
-          const { initialValue, label, inputComponentType = 'input', ...restInputProps } = input;
+          const {
+            initialValue, label, inputComponentType = 'input', options = [], ...restInputProps
+          } = input;
           const Component = inputComponents[inputComponentType as keyof typeof inputComponents];
           return (
             <div key={restInputProps.id} className="form-group">
               {label && <label htmlFor={restInputProps.id}>{label}</label>}
               <div className="form-control">
-                <Component
-                  changeHandler={inputChangeHandler}
-                  value={formState[restInputProps.id].value}
-                  {...restInputProps}
-                />
+                {(
+                  //@ts-ignore
+                  <Component
+                    changeHandler={inputChangeHandler}
+                    value={formState[restInputProps.id].value}
+                    {...(inputComponentType === 'select' ? { options } : {})}
+                    {...restInputProps}
+                  />
+                )}
               </div>
             </div>
           )

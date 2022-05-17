@@ -1,9 +1,7 @@
 import { ComponentPropsWithRef } from "react";
 
-export interface InputModel {
-  initialValue?: string;
-  id: string;
-  label?: string | JSX.Element;
+export interface InputModel extends CommonTypes.CommonInputProps {
+  
 }
 
 export interface InputPropsModel extends ComponentPropsWithRef<'input'>, Omit<InputModel, 'id'> {

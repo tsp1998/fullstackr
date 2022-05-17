@@ -9,6 +9,8 @@ import ListWithFetch from '../../components/common/List/ListWithFetch'
 import Table from '../../components/common/Table/Table'
 import Form from '../../components/common/Form/Form'
 import Card from '../../components/common/Card/Card'
+import ModalContainer from '../../components/common/Modal/ModalContainer'
+import Modal from '../../components/common/Modal/Modal'
 
 export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, IndexPageModels.IndexPageStateModel> {
   constructor(props: IndexPageModels.IndexPagePropsModel) {
@@ -53,12 +55,23 @@ export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, In
             inputs: [
               { label: 'ID', id: 'id', initialValue: '' },
               { label: 'Name', id: 'name', initialValue: '' },
+              {
+                label: 'Select Gender',
+                id: 'gender',
+                inputComponentType: 'select',
+                initialValue: '',
+                options: [
+                  { text: 'Male', value: 'male' },
+                  { text: 'Female', value: 'female' },
+                ]
+              },
+              { label: 'Bio', id: 'bio', inputComponentType: 'textarea', initialValue: '' },
             ],
             buttons: [
-              {text: 'Sign In'}
+              { text: 'Sign In' }
             ]
           }}
-          api="http://localhost:8080/api/user"
+          // api="http://localhost:8080/api/user"
           submitHandler={(data) => new Promise(resolve => {
             console.log(`data`, data)
             setTimeout(() => resolve(true), 2000)
@@ -67,6 +80,21 @@ export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, In
         <Card heading='Heading' footer="footer">
           COntent
         </Card>
+        {/* <ModalContainer
+          backDropStyle={{ background: 'red' }}
+          onBackDropClick={() => console.log('backdrop click')}
+          onBackDropMouseEnter={() => console.log('backdrop mouse eneter')}
+          onBackDropMouseLeave={() => console.log('backdrop mouse leave')}
+          >
+          <Modal
+            closeModalHandler={() => undefined}
+            onClick={() => console.log('modal click')}
+            onMouseEnter={() => console.log('modal mouse eneter')}
+            onMouseLeave={() => console.log('modal mouse leave')}
+          >
+            Hello
+          </Modal>
+        </ModalContainer> */}
       </IndexPageStyles.IndexPageStyled>
     )
   }

@@ -3,7 +3,7 @@ import { RequestHandler, Router } from 'express'
 import createController from '../controllers/createController'
 
 type RouteNameType = `${string}-${APITypes.RequestType}`;
-interface RouteDataModel {
+export interface RouteDataModel {
   idParamName?: string;
   controller?: RequestHandler;
   controllerData?: {
@@ -13,7 +13,7 @@ interface RouteDataModel {
   },
   middlewares?: Array<RequestHandler>;
 }
-interface RoutesMapModel {
+export interface RoutesMapModel {
   '/'?: RouteDataModel;
   [route: RouteNameType]: RouteDataModel;
 }

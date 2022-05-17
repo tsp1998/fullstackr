@@ -1,14 +1,14 @@
 import React, { FunctionComponent, useState } from 'react'
-import { InputPropsModel } from './Input.models'
-import * as InputStyles from './Input.styles'
+import { TextareaPropsModel } from './Textarea.models'
+import * as TextareaStyles from './Textarea.styles'
 
-const Input: FunctionComponent<InputPropsModel> = (props): JSX.Element => {
+const Textarea: FunctionComponent<TextareaPropsModel> = (props): JSX.Element => {
   const { initialValue = '', changeHandler = () => undefined, className = '', ...restProps } = props;
   const [value, setValue] = useState(initialValue || '');
 
   return (
-    <InputStyles.InputStyled
-      className={`input ${className}`}
+    <TextareaStyles.TextareaStyled
+      className={`Textarea ${className}`}
       value={value}
       onChange={event => {
         const { target: { value } } = event;
@@ -20,4 +20,4 @@ const Input: FunctionComponent<InputPropsModel> = (props): JSX.Element => {
   )
 }
 
-export default Input
+export default Textarea
