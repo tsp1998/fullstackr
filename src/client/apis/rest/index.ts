@@ -1,9 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 
 const restApi = async (
-  requestType: APITypes.RequestType,
-  requestBody: APITypes.RequestBody
-  // ...params: APITypes.ApiFunctionParams
+  requestType: APITypes.RequestType, requestBody: APITypes.RequestBody
 ): Promise<APITypes.ResponseModel> => {
   try {
     const params = [

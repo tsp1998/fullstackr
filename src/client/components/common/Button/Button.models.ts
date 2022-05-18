@@ -1,11 +1,12 @@
 import { ComponentPropsWithRef, MouseEvent } from "react";
 
 export interface ButtonModel {
-  text: ListAndItemTypes.Item | JSX.Element;
+  children: string | JSX.Element;
   loading?: boolean;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  type?: 'submit' | 'reset' | 'button';
 }
 
-export interface ButtonPropsModel extends ComponentPropsWithRef<'button'>, ButtonModel {
+export interface ButtonPropsModel extends Omit<ComponentPropsWithRef<'button'>, 'children'>, ButtonModel {
   
 }

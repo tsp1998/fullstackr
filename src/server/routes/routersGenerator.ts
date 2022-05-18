@@ -1,6 +1,6 @@
 import createRouter, { RouteDataModel, RoutesMapModel } from './createRouter'
-import createModel, { ModelOptionsType, SchemaDefinitionType } from '../models/createModel'
-import { ArtifactData } from '../@types/artifact.types'
+import createModel from '../models/createModel'
+import { ArtifactData } from '../../common/@types/artifact.types'
 import { Router } from 'express'
 
 const routersGenerator = (artifactData: ArtifactData) => {

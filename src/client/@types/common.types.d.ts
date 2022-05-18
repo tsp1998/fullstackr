@@ -5,5 +5,6 @@ declare namespace CommonTypes {
     initialValue?: string;
     id: string;
     label?: string | JSX.Element;
+    placeholder?: string;
   }
 }

@@ -10,6 +10,7 @@ import Header from './components/Header/Header'
 //pages
 const IndexPage = React.lazy(() => import('./pages/IndexPage/IndexPage'))
 const AboutPage = React.lazy(() => import('./pages/AboutPage/AboutPage'))
+const BuilderPage = React.lazy(() => import('./pages/BuilderPage/BuilderPage'))
 
 const App: FunctionComponent<{}> = (props): JSX.Element => {
   return (
@@ -21,6 +22,7 @@ const App: FunctionComponent<{}> = (props): JSX.Element => {
             <Routes>
               <Route path='/' element={<IndexPage />} />
               <Route path='/about' element={<AboutPage />} />
+              <Route path='/:projectId' element={<BuilderPage />} />
             </Routes>
           </React.Suspense>
         </AppStyles.AppStyled>

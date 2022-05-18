@@ -1,11 +1,25 @@
-import React, { FunctionComponent } from 'react'
-import { BackendSpecifierPropsModel } from './BackendSpecifier.models'
+import React, { FunctionComponent, useRef } from 'react'
 import * as BackendSpecifierStyles from './BackendSpecifier.styles'
+//models
+import { BackendSpecifierPropsModel } from './BackendSpecifier.models'
+import { TrimmedFormState } from '../common/Form/Form.models'
 //components
 import Form from '../common/Form/Form'
+import DataModelForm from '../DataModelForm/DataModelForm'
+import Button from '../common/Button/Button'
 
 const BackendSpecifier: FunctionComponent<BackendSpecifierPropsModel> = (props): JSX.Element => {
-  const { className = '', ...restProps } = props;
+  const { className = '',  ...restProps } = props;
+  const artifactName = useRef('');
+
+  const onFormStateChange = (formState: TrimmedFormState) => {
+    artifactName.current = (formState.artifactName as any).value;
+    props.onFormStateChange!(formState, 'artifact')
+  }
+
+  const save = () => {
+    props.save()
+  }
 
   return (
     <BackendSpecifierStyles.BackendSpecifierStyled
@@ -16,16 +30,15 @@ const BackendSpecifier: FunctionComponent<BackendSpecifierPropsModel> = (props):
         formSchema={{
           inputs: [
             { id: 'artifactName', label: 'Artifact Name' },
-            { id: 'Item-Get', type: 'checkbox', label: 'Get' },
-            { id: 'Item-Post', type: 'checkbox', label: 'Post' },
-            { id: 'Item-Patch', type: 'checkbox', label: 'Patch' },
-            { id: 'Item-Delete', type: 'checkbox', label: 'Delete' },
-            { id: 'List-Get', type: 'checkbox', label: 'Get' },
-            { id: 'List-Post', type: 'checkbox', label: 'Post' },
-            { id: 'List-Patch', type: 'checkbox', label: 'Patch' },
-            { id: 'List-Delete', type: 'checkbox', label: 'Delete' },
+            { id: 'item-get', type: 'checkbox', label: 'Get' },
+            { id: 'item-post', type: 'checkbox', label: 'Post' },
+            { id: 'item-patch', type: 'checkbox', label: 'Patch' },
+            { id: 'item-delete', type: 'checkbox', label: 'Delete' },
+            { id: 'list-get', type: 'checkbox', label: 'Get' },
+            { id: 'list-post', type: 'checkbox', label: 'Post' },
+            { id: 'list-patch', type: 'checkbox', label: 'Patch' },
+            { id: 'list-delete', type: 'checkbox', label: 'Delete' },
           ],
-          buttons: [{ text: 'Save' }]
         }}
         inputsContainerChildren={(
           <>
@@ -34,11 +47,13 @@ const BackendSpecifier: FunctionComponent<BackendSpecifierPropsModel> = (props):
           </>
         )}
         submitHandler={(formState) => {
-          console.log(`formState`, formState)
           return Promise.resolve(true);
         }}
-        onFormStateChange={props.onFormStateChange}
+        onFormStateChange={onFormStateChange}
       />
+      Data Model ({artifactName.current})
+      <DataModelForm onFormStateChange={formState => props.onFormStateChange!(formState, 'data-model')} />
+      <Button onClick={save}>Save</Button>
     </BackendSpecifierStyles.BackendSpecifierStyled>
   )
 }

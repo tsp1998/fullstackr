@@ -1,4 +1,24 @@
-import { RequestHandler } from "express"
+import connectToMongoDB from '../db/connectToMongoDB'
+import { Request, RequestHandler } from "express"
+
+const currentConnectionData: {id: string; disconnectFunction: Function} = {
+  id: '',
+  disconnectFunction: () => undefined
+}
+
+const useDB = async (req: Request) => {
+  const match = req.originalUrl.match(/\/api\/(.*)\//)
+  let id = match ? match[1] : ''
+  const slashIndex = id.indexOf('/')
+  if (slashIndex !== -1) {
+    id = id.slice(0, slashIndex)
+  }
+  if (id !== currentConnectionData.id) {
+    currentConnectionData.id = id;
+    currentConnectionData.disconnectFunction()
+    currentConnectionData.disconnectFunction = await connectToMongoDB({ local: true, MONGO_DB_NAME: id })
+  }
+}
 
 const createController: ControllerTypes.createControllerFunctionType = (
   { requestType, dataType = 'item', StorageClass, methodData = {}, optionalData = {} }
@@ -7,6 +27,7 @@ const createController: ControllerTypes.createControllerFunctionType = (
     let data: any, errorMessage: string;
     switch (requestType) {
       case 'get': {
+        await useDB(req);
         const { idParamName = 'itemId', itemName = 'item' } = optionalData
         errorMessage = `No ${itemName} found with this id...`
         let itemId: string;
@@ -29,6 +50,7 @@ const createController: ControllerTypes.createControllerFunctionType = (
         }
       } break;
       case 'post': {
+        await useDB(req);
         errorMessage = 'Failed to create item...';
         const { data: comingData } = req.body || {}
         if (!comingData) { throw new Error('No item provided...') }
@@ -43,6 +65,7 @@ const createController: ControllerTypes.createControllerFunctionType = (
         }
       } break;
       case 'patch': {
+        await useDB(req);
         const { idParamName = 'itemId', itemName = 'item' } = optionalData
         errorMessage = `${itemName} not updated...`
         const itemId = req.params[idParamName] || '';
@@ -59,6 +82,7 @@ const createController: ControllerTypes.createControllerFunctionType = (
         }
       } break;
       case 'delete': {
+        await useDB(req);
         const { idParamName = 'itemId', itemName = 'item' } = optionalData
         errorMessage = `${itemName} not deleted...`
         const itemId = req.params[idParamName] || '';

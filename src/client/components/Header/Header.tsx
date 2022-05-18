@@ -7,7 +7,9 @@ import * as HeaderStyles from './Header.styles'
 const Header: FunctionComponent<{}> = (props): JSX.Element => {
   return (
     <HeaderStyles.HeaderStyled>
-      <HeaderStyles.Brand>FULLSTACKR</HeaderStyles.Brand>
+      <HeaderStyles.Brand>
+        <Link to="/">FULLSTACKR</Link>
+      </HeaderStyles.Brand>
       <div className="links">
         <Link to='/'>Home</Link>
         <Link to='/about'>About</Link>

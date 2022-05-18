@@ -30,12 +30,7 @@ const Select: FunctionComponent<SelectPropsModel> = (props): JSX.Element => {
       }}
       {...restProps}
     >
-      {defaultOptionText && (
-        <SelectStyles.Option value="">
-          {defaultOptionText}
-        </SelectStyles.Option>
-      )}
-      {options.map(option => (
+      {[...(defaultOptionText ? [{ text: defaultOptionText, value: '' }] : []), ...options].map(option => (
         <SelectStyles.Option key={option.value} value={option.value}>
           {option.text}
         </SelectStyles.Option>

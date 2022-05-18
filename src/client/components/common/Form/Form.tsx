@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, FormEventHandler, FunctionComponent, useCallback, useEffect, useReducer } from 'react'
+import React, { ChangeEvent, FormEvent, FormEventHandler, FunctionComponent, useCallback, useEffect, useReducer, useState } from 'react'
 //models
 import * as FormModels from './Form.models'
 //styles
@@ -33,6 +33,10 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
     buttonsContainerChildren,
     submitHandler: submitHandlerFromProps = () => true,
     onFormStateChange = () => undefined,
+    onApiTrigger = () => undefined,
+    defaultErrorMessage,
+    defaultSuccessMessage,
+    wantMessage = false,
     api = '',
     ...restProps
   } = props;
@@ -46,6 +50,7 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
   const [formState, dispatchFormState] = useReducer(
     createItemReducer('form', initialFormState), initialFormState
   )
+  const [successMessage, setSuccessMessage] = useState(defaultSuccessMessage);
   const { data, errorMessage, loading, request, setErrorMessage, setLoading } = useRequest()
 
   const inputChangeHandler = useCallback((value: string | boolean, id?: string) => {
@@ -57,11 +62,17 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      setSuccessMessage('');
+      setErrorMessage('');
       if (api) {
-        await request({
+        const apiRequest = request({
           requestType: 'post',
           requestBody: { api, data: { data: trimFormState(formState) } }
         })
+        onApiTrigger(apiRequest);
+        const response = await apiRequest;
+        console.log(`response`, response)
+        setSuccessMessage((response as any)?.message || 'Submit action was successful...')
       } else {
         setLoading(true);
         await submitHandlerFromProps(trimFormState(formState));
@@ -69,7 +80,7 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
       }
     } catch (error) {
       loading && setLoading(false);
-      setErrorMessage((error as Error).message)
+      setErrorMessage((error as Error).message || 'Something went wrong...')
     }
   }
 
@@ -103,6 +114,11 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
         })}
         {inputsContainerChildren}
       </FormStyles.FormInputsContainer>
+      {wantMessage && (
+        <FormStyles.FormMessage messageType={errorMessage ? 'error' : 'success'}>
+          {errorMessage || successMessage}
+        </FormStyles.FormMessage>
+      )}
       <FormStyles.FormButtonsContainer className='form-buttons-container'>
         {buttons.map((button, i) => <Button key={i} {...button} />)}
         {buttonsContainerChildren}

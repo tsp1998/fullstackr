@@ -6,6 +6,8 @@ export const createFolderIfNotExist = (path: string): Promise<boolean> => new Pr
         if (error) { return reject(error); }
         resolve(true);
       })
+    } else {
+      resolve(false)
     }
   })
 })
