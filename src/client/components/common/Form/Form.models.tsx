@@ -1,4 +1,4 @@
-import { ComponentPropsWithRef } from 'react';
+import { ComponentPropsWithRef, HTMLInputTypeAttribute } from 'react';
 import { InputModel } from '../Input/Input.models'
 import { ButtonModel } from '../Button/Button.models'
 import { OptionModel } from '../Select/Select.models';
@@ -16,7 +16,8 @@ export interface FormPropsModel extends ComponentPropsWithRef<'form'> {
   formSchema: {
     inputs: Array<CommonTypes.CommonInputProps & {
       inputComponentType?: CommonTypes.inputComponentType;
-      options?: Array<OptionModel>
+      options?: Array<OptionModel>;
+      type?: HTMLInputTypeAttribute;
     }>;
     buttons?: Array<ButtonModel>;
   };

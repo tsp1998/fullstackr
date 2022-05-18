@@ -47,7 +47,7 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
   )
   const { data, errorMessage, loading, request, setErrorMessage, setLoading } = useRequest()
 
-  const inputChangeHandler = useCallback((value: string, id?: string) => {
+  const inputChangeHandler = useCallback((value: string | boolean, id?: string) => {
     dispatchFormState(itemNormalActions.updateItem('form', {
       [id!]: { ...formState[id!], value }
     }))
@@ -88,7 +88,6 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
                   //@ts-ignore
                   <Component
                     changeHandler={inputChangeHandler}
-                    value={formState[restInputProps.id].value}
                     {...(inputComponentType === 'select' ? { options } : {})}
                     {...restInputProps}
                   />
