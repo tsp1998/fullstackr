@@ -5,22 +5,27 @@ import * as BackendSpecifierStyles from './BackendSpecifier.styles'
 import Form from '../common/Form/Form'
 
 const BackendSpecifier: FunctionComponent<BackendSpecifierPropsModel> = (props): JSX.Element => {
+  const { className = '', ...restProps } = props;
+
   return (
-    <BackendSpecifierStyles.BackendSpecifierStyled>
+    <BackendSpecifierStyles.BackendSpecifierStyled
+      className={`backend-specifier ${className}`}
+      {...restProps}
+    >
       <Form
         formSchema={{
           inputs: [
             { id: 'artifactName', label: 'Artifact Name' },
-            { id: 'itemGet', type: 'checkbox', label: 'Get' },
-            { id: 'itemPost', type: 'checkbox', label: 'Post' },
-            { id: 'itemPatch', type: 'checkbox', label: 'Patch' },
-            { id: 'itemDelete', type: 'checkbox', label: 'Delete' },
-            { id: 'listGet', type: 'checkbox', label: 'Get' },
-            { id: 'listPost', type: 'checkbox', label: 'Post' },
-            { id: 'listPatch', type: 'checkbox', label: 'Patch' },
-            { id: 'listDelete', type: 'checkbox', label: 'Delete' },
+            { id: 'Item-Get', type: 'checkbox', label: 'Get' },
+            { id: 'Item-Post', type: 'checkbox', label: 'Post' },
+            { id: 'Item-Patch', type: 'checkbox', label: 'Patch' },
+            { id: 'Item-Delete', type: 'checkbox', label: 'Delete' },
+            { id: 'List-Get', type: 'checkbox', label: 'Get' },
+            { id: 'List-Post', type: 'checkbox', label: 'Post' },
+            { id: 'List-Patch', type: 'checkbox', label: 'Patch' },
+            { id: 'List-Delete', type: 'checkbox', label: 'Delete' },
           ],
-          buttons: [{ text: 'Create' }]
+          buttons: [{ text: 'Save' }]
         }}
         inputsContainerChildren={(
           <>
@@ -32,6 +37,7 @@ const BackendSpecifier: FunctionComponent<BackendSpecifierPropsModel> = (props):
           console.log(`formState`, formState)
           return Promise.resolve(true);
         }}
+        onFormStateChange={props.onFormStateChange}
       />
     </BackendSpecifierStyles.BackendSpecifierStyled>
   )

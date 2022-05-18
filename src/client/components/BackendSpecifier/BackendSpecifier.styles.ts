@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { BackendSpecifierPropsModel } from './BackendSpecifier.models'
 
 export const BackendSpecifierStyled = styled.div<Partial<BackendSpecifierPropsModel>>`
+  padding: 1rem;
   form {
     .form-inputs-container {
       display: flex;

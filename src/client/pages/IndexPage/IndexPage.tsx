@@ -6,8 +6,7 @@ import * as IndexPageStyles from './IndexPage.styles'
 //components
 import List from '../../components/common/List/List'
 // import Specifier from '../../components/Specifier/Specifier'
-import BackendSpecifier from '../../components/BackendSpecifier/BackendSpecifier'
-import BackendPreview from '../../components/BackendPreview/BackendPreview'
+import BackendBuilder from '../../components/BackendBuilder/BackendBuilder'
 
 
 export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, IndexPageModels.IndexPageStateModel> {
@@ -25,10 +24,7 @@ export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, In
           heading='Project List'
           items={[]}
         />
-        <div className="backend-builder">
-          <BackendSpecifier />
-          <BackendPreview />
-        </div>
+        <BackendBuilder />
       </IndexPageStyles.IndexPageStyled>
     )
   }

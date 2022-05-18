@@ -1,8 +1,6 @@
 import { ComponentPropsWithRef, HTMLInputTypeAttribute } from 'react';
-import { InputModel } from '../Input/Input.models'
 import { ButtonModel } from '../Button/Button.models'
 import { OptionModel } from '../Select/Select.models';
-import { TextareaModel } from '../Textarea/Textarea.models';
 
 export interface FormState {
   [id: string]: {
@@ -25,4 +23,5 @@ export interface FormPropsModel extends ComponentPropsWithRef<'form'> {
   buttonsContainerChildren?: JSX.Element;
   submitHandler?: (trimmedFormState: TrimmedFormState) => Promise<boolean>;
   api?: string;
+  onFormStateChange?: (trimmedFormState: TrimmedFormState) => void;
 }

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, FormEventHandler, FunctionComponent, useCallback, useReducer } from 'react'
+import React, { ChangeEvent, FormEvent, FormEventHandler, FunctionComponent, useCallback, useEffect, useReducer } from 'react'
 //models
 import * as FormModels from './Form.models'
 //styles
@@ -32,6 +32,7 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
     inputsContainerChildren,
     buttonsContainerChildren,
     submitHandler: submitHandlerFromProps = () => true,
+    onFormStateChange = () => undefined,
     api = '',
     ...restProps
   } = props;
@@ -71,6 +72,10 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
       setErrorMessage((error as Error).message)
     }
   }
+
+  useEffect(() => {
+    onFormStateChange(formState);
+  }, [formState])
 
   return (
     <FormStyles.FormStyled onSubmit={submitHandler} className={`form ${className}`} {...restProps}>
