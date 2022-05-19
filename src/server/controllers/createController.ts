@@ -7,6 +7,7 @@ const currentConnectionData: {id: string; disconnectFunction: Function} = {
 }
 
 const useDB = async (req: Request) => {
+  //TODO: check if database only can be changed with mongoose.connection.useDB
   const match = req.originalUrl.match(/\/api\/(.*)\//)
   let id = match ? match[1] : ''
   const slashIndex = id.indexOf('/')

@@ -12,8 +12,11 @@ import Form from '../../components/common/Form/Form'
 //api
 import { API } from '../../constants/api.constants'
 import restApi from '../../apis/rest'
+
+//components
 import Select from '../../components/common/Select/Select'
 import Button from '../../components/common/Button/Button'
+import MonacoEditor from '../../components/Editor/MonacoEditor/MonacoEditor'
 
 
 export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, IndexPageModels.IndexPageStateModel> {
@@ -69,6 +72,15 @@ export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, In
           }}
           wantMessage={true}
         />
+
+        <div style={{ height: '500px' }}>
+          <MonacoEditor
+            language='typescript'
+            initialValue='const a = 10;'
+            // options={{readOnly: true}}
+            changeHandler={value => console.log(`value`, value)}
+          />
+        </div>
       </IndexPageStyles.IndexPageStyled>
     )
   }
