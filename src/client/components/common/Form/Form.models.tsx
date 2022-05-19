@@ -16,6 +16,7 @@ export type FormInputModel = CommonTypes.CommonInputProps & {
 }
 
 export interface FormPropsModel extends ComponentPropsWithRef<'form'> {
+  formId?: string;
   formSchema: {
     inputs: Array<FormInputModel>;
     buttons?: Array<ButtonModel>;

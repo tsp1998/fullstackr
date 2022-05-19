@@ -34,7 +34,7 @@ export class BuilderPage extends Component<BuilderPagePropsModel, BuilderPageSta
   }
 
   componentDidMount = async () => {
-    this.checkProjectExists()
+    await this.checkProjectExists()
   }
 
   goBack = () => {

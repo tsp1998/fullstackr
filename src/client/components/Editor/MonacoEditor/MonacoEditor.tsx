@@ -15,6 +15,7 @@ const MonacoEditor: FunctionComponent<MonacoEditorPropsModel> = (props): JSX.Ele
     changeHandler = () => undefined,
     initialValue = '',
     options = {},
+    language = "typescript",
     ...restProps
   } = props;
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
@@ -39,9 +40,9 @@ const MonacoEditor: FunctionComponent<MonacoEditorPropsModel> = (props): JSX.Ele
       <MonacoEditorOriginal
         className={`monaco-editor ${className}`}
         value={initialValue}
-        theme="vs-dark"
+        // theme="vs-dark"
+        language={language}
         height="100%"
-        defaultLanguage='typescript'
         options={{
           wordWrap: 'on',
           lineNumbersMinChars: 3,

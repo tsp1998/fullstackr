@@ -39,7 +39,6 @@ export const userRouter = createRouter({
         }
         return user
       })
-      console.log(`updatedUsers`, updatedUsers)
       fs.writeFileSync(
         usersFilePath,
         JSON.stringify(updatedUsers),

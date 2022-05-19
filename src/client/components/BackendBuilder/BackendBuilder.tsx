@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 //types, models
 import { BackendBuilderPropsModel } from './BackendBuilder.models'
 import { ArtifactData } from '../../../common/@types/artifact.types'
@@ -10,19 +10,20 @@ import { TrimmedFormState } from '../common/Form/Form.models'
 //hooks
 import useRequest from '../../hooks/useRequest'
 import { API } from '../../constants/api.constants'
+import Select from '../common/Select/Select'
+import { OptionModel } from '../common/Select/Select.models'
 
 const BackendBuilder: FunctionComponent<BackendBuilderPropsModel> = (props): JSX.Element => {
   const { className = '', ...restProps } = props;
   const [formState, setFormState] = useState({});
-  const [dataModelFormState, setDataModelFormState] = useState({});
+  const [selectedArtifact, setSelectedArtifact] = useState('');
+  const [dataModelFormState, setDataModelFormState] = useState<Array<TrimmedFormState>>([]);
   const { data, request, errorMessage, loading, setErrorMessage } = useRequest();
   const [successMessage, setSuccessMessage] = useState('');
-  const formStateChangeHandler = (formState: TrimmedFormState, formType: 'artifact' | 'data-model') => {
-    if (formType === 'artifact') {
-      setFormState(formState)
-    } else {
-      setDataModelFormState(formState)
-    }
+  const [artifacts, setArtifacts] = useState<Array<OptionModel>>([]);
+  const [artifactData, setArtifactData] = useState<ArtifactData | null>(null)
+  const formStateChangeHandler = (formState: TrimmedFormState) => {
+    setFormState(formState)
   }
 
   const save = async () => {
@@ -42,19 +43,19 @@ const BackendBuilder: FunctionComponent<BackendBuilderPropsModel> = (props): JSX
         artifactData[`${dataType}Routes`].push(requestType);
       }
     })
-    const dataModelFormStateKeys = Object.keys(dataModelFormState);
-    for (let i = 0; i < dataModelFormStateKeys.length / 4; i++) {
-      const propName = (dataModelFormState[`propName${i}` as keyof typeof dataModelFormState] as any).value;
-      const propDataType = (dataModelFormState[`propDataType${i}` as keyof typeof dataModelFormState] as any).value;
-      const propRequired = (dataModelFormState[`propRequired${i}` as keyof typeof dataModelFormState] as any).value;
-      const _default = (dataModelFormState[`default${i}` as keyof typeof dataModelFormState] as any).value;
-      artifactData.schema[propName] = {
+    dataModelFormState.forEach(propData => {
+      const { propName, propRequired, propDataType, _default } = propData || {};
+      if (!propName) {
+        return;
+      }
+      artifactData.schema[propName as string] = {
         type: propDataType,
         ...(propRequired ? { required: true } : {}),
         ...(_default ? { default: _default } : {}),
       }
-    }
+    })
     setSuccessMessage('');
+    setArtifactData(artifactData);
     try {
       const response = await request({
         requestType: 'post',
@@ -63,13 +64,53 @@ const BackendBuilder: FunctionComponent<BackendBuilderPropsModel> = (props): JSX
           data: artifactData
         }
       })
-      if (response) {
+      if (response.status === 'success') {
         setSuccessMessage('Artifact data saved successfully...')
+        if (!artifacts.find(artifact => artifact.value === artifactName.value)) {
+          setArtifacts([...artifacts, { text: artifactName.value, value: artifactName.value }])
+        }
       }
     } catch (error) {
       console.log(`error`, error)
     }
   }
+
+  const getArtifacts = async () => {
+    try {
+      const projectId = window.location.pathname.slice(1)
+      const response = await request({
+        requestType: 'get',
+        requestBody: { api: `${API}/project/artifacts/${projectId}` }
+      })
+      setArtifacts((response.data as Array<string>).map(fileName => ({
+        text: fileName.split('.')[0],
+        value: fileName.split('.')[0],
+      })))
+    } catch (error) {
+      console.log(`error`, error)
+    }
+  }
+
+  const artifactChangeHandler = async (value: string) => {
+    if (!value) {
+      if (selectedArtifact === value) {
+        return
+      } else {
+        setSelectedArtifact(value)
+        return setArtifactData(null)
+      }
+    }
+    const response = await request({
+      requestType: 'get',
+      requestBody: { api: `${API}/project/artifacts${window.location.pathname}/${value}`, }
+    })
+    setArtifactData(response.data as ArtifactData)
+    setSelectedArtifact(value)
+  }
+
+  useEffect(() => {
+    getArtifacts()
+  }, [])
 
   return (
     <BackendBuilderStyles.BackendBuilderStyled
@@ -77,9 +118,18 @@ const BackendBuilder: FunctionComponent<BackendBuilderPropsModel> = (props): JSX
       {...restProps}
     >
       <div>
+        <Select
+          options={artifacts}
+          id="artifact"
+          defaultOptionText='New artifact'
+          changeHandler={artifactChangeHandler}
+          initialValue={selectedArtifact}
+        />
         <BackendSpecifier
           save={save}
           onFormStateChange={formStateChangeHandler}
+          setDataModelFormState={setDataModelFormState}
+          artifactData={artifactData}
         />
         {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
         {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}

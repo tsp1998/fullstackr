@@ -1,3 +1,5 @@
+import { OptionModel } from "../../components/common/Select/Select.models";
+
 export interface BuilderPagePropsModel {
   
 }

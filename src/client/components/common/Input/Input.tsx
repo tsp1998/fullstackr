@@ -3,10 +3,11 @@ import { useEffect } from 'react';
 import { InputPropsModel } from './Input.models'
 import * as InputStyles from './Input.styles'
 
+const calculateInitialValue = (value: boolean | string, type: React.HTMLInputTypeAttribute): boolean | string => value ? value : type === 'checkbox' ? false : ''; 
+
 const Input: FunctionComponent<InputPropsModel> = (props): JSX.Element => {
   const { initialValue, type = 'text', changeHandler = () => undefined, className = '', ...restProps } = props;
-  const iv: boolean | string = initialValue || type === 'checkbox' ? false : '';
-  const [value, setValue] = useState<boolean | string>(iv);
+  const [value, setValue] = useState<boolean | string>(calculateInitialValue(initialValue!, type));
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     let value: boolean | string;
@@ -23,9 +24,12 @@ const Input: FunctionComponent<InputPropsModel> = (props): JSX.Element => {
   useEffect(() => {
     changeHandler(value, props.id)
   }, [])
+  
+  useEffect(() => {
+    setValue(calculateInitialValue(initialValue!, type))
+  }, [initialValue])
 
   const propByType = type === 'checkbox' ? { checked: value } : { value }
-
   return (
     //@ts-ignore
     <InputStyles.InputStyled

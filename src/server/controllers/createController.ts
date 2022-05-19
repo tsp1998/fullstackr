@@ -3,7 +3,7 @@ import { Request, RequestHandler } from "express"
 
 const currentConnectionData: {id: string; disconnectFunction: Function} = {
   id: '',
-  disconnectFunction: () => undefined
+  disconnectFunction: () => undefined,
 }
 
 const useDB = async (req: Request) => {

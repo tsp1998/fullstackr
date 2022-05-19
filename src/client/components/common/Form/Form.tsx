@@ -24,11 +24,20 @@ const trimFormState = (formState: FormModels.FormState): FormModels.TrimmedFormS
   return Object.keys(formState).reduce((acc, id) => ({ ...acc, [id]: formState[id].value }), {});
 }
 
+const buildFormStateFromInputs = (inputs: Array<FormModels.FormInputModel>) => inputs.reduce((acc, input) => ({
+  ...acc,
+  [input.id]: {
+    value: input.initialValue,
+    errorMessage: '',
+  }
+}), {})
+
 const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element => {
   const {
     formSchema: { inputs = [], buttons = [] },
     className = '',
     children,
+    formId = 'form',
     inputsContainerChildren,
     buttonsContainerChildren,
     submitHandler: submitHandlerFromProps = () => true,
@@ -40,24 +49,23 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
     api = '',
     ...restProps
   } = props;
-  const initialFormState: FormModels.FormState = inputs.reduce((acc, input) => ({
-    ...acc,
-    [input.id]: {
-      value: input.initialValue,
-      errorMessage: '',
-    }
-  }), {})
+  const initialFormState: FormModels.FormState = buildFormStateFromInputs(inputs)
   const [formState, dispatchFormState] = useReducer(
-    createItemReducer('form', initialFormState), initialFormState
+    createItemReducer(formId, initialFormState), initialFormState
   )
   const [successMessage, setSuccessMessage] = useState(defaultSuccessMessage);
   const { data, errorMessage, loading, request, setErrorMessage, setLoading } = useRequest()
 
   const inputChangeHandler = useCallback((value: string | boolean, id?: string) => {
-    dispatchFormState(itemNormalActions.updateItem('form', {
+    dispatchFormState(itemNormalActions.updateItem(formId, {
       [id!]: { ...formState[id!], value }
     }))
   }, [])
+
+  useEffect(() => {
+    const newFormState = buildFormStateFromInputs(inputs);
+    dispatchFormState(itemNormalActions.setItem(formId, newFormState))
+  }, [inputs])
 
   const submitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -71,8 +79,7 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
         })
         onApiTrigger(apiRequest);
         const response = await apiRequest;
-        console.log(`response`, response)
-        setSuccessMessage((response as any)?.message || 'Submit action was successful...')
+        setSuccessMessage((response.data as any)?.message || 'Submit action was successful...')
       } else {
         setLoading(true);
         await submitHandlerFromProps(trimFormState(formState));
@@ -93,7 +100,7 @@ const Form: FunctionComponent<FormModels.FormPropsModel> = (props): JSX.Element 
       <FormStyles.FormInputsContainer className='form-inputs-container'>
         {inputs.map(input => {
           const {
-            initialValue, label, inputComponentType = 'input', options = [], ...restInputProps
+            label, inputComponentType = 'input', options = [], ...restInputProps
           } = input;
           const Component = inputComponents[inputComponentType as keyof typeof inputComponents];
           return (

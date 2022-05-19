@@ -16,8 +16,6 @@ import restApi from '../../apis/rest'
 //components
 import Select from '../../components/common/Select/Select'
 import Button from '../../components/common/Button/Button'
-import MonacoEditor from '../../components/Editor/MonacoEditor/MonacoEditor'
-
 
 export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, IndexPageModels.IndexPageStateModel> {
   constructor(props: IndexPageModels.IndexPagePropsModel) {
@@ -67,20 +65,8 @@ export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, In
             buttons: [{ children: 'Create Project', type: 'submit' }]
           }}
           api={`${API}/create-project`}
-          onApiTrigger={apiRequest => {
-            console.log(`apiRequest`, apiRequest)
-          }}
           wantMessage={true}
         />
-
-        <div style={{ height: '500px' }}>
-          <MonacoEditor
-            language='typescript'
-            initialValue='const a = 10;'
-            // options={{readOnly: true}}
-            changeHandler={value => console.log(`value`, value)}
-          />
-        </div>
       </IndexPageStyles.IndexPageStyled>
     )
   }

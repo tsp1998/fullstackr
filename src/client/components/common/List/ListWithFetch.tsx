@@ -16,7 +16,7 @@ const ListWithFetch: FunctionComponent<ListWithFetchPropsModel> = (props): JSX.E
   useEffect(() => {
     request({
       requestType: 'get',
-      apiFunctionParams: [props.api]
+      requestBody: { api: props.api }
     });
   }, [])
 

@@ -1,14 +1,16 @@
 import styled from 'styled-components'
 import Form from '../common/Form/Form'
 
-export const DataModelFormStyled = styled(Form)`
-  .form-inputs-container {
-    order: 2;
-    > * {
-      width: 20% !important;
-      margin: .5rem 1rem;
-      input {
-        width: 100%;
+export const DataModelFormStyled = styled.div`
+  form {
+    .form-inputs-container {
+      order: 2;
+      > * {
+        width: 20% !important;
+        margin: .5rem 1rem;
+        input {
+          width: 100%;
+        }
       }
     }
   }
