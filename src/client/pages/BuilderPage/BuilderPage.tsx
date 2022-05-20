@@ -9,6 +9,8 @@ import Redirect from '../../components/Redirect/Redirect'
 import restApi from '../../apis/rest'
 import { API } from '../../constants/api.constants'
 import Button from '../../components/common/Button/Button'
+import RealTimeBuilder from '../../components/RealTimeBuilder/RealTimeBuilder'
+import { Accordion } from '../../components/common'
 
 export class BuilderPage extends Component<BuilderPagePropsModel, BuilderPageStateModel> {
   constructor(props: BuilderPagePropsModel) {
@@ -16,7 +18,6 @@ export class BuilderPage extends Component<BuilderPagePropsModel, BuilderPageSta
     this.state = {
       redirectPath: '',
       errorMessage: '',
-      projectId: ''
     }
   }
 
@@ -28,7 +29,6 @@ export class BuilderPage extends Component<BuilderPagePropsModel, BuilderPageSta
       if (response.status === 'error') {
         throw new Error('Invalid project id');
       }
-      this.setState({ projectId })
     } catch (error) {
       this.setState({ errorMessage: (error as Error).message })
     }
@@ -43,7 +43,7 @@ export class BuilderPage extends Component<BuilderPagePropsModel, BuilderPageSta
   }
 
   render(): JSX.Element {
-    const { redirectPath, errorMessage, projectId } = this.state;
+    const { redirectPath, errorMessage } = this.state;
     return (
       <BuilderPageStyles.BuilderPageStyled>
         <Redirect redirectPath={redirectPath} />
@@ -53,12 +53,11 @@ export class BuilderPage extends Component<BuilderPagePropsModel, BuilderPageSta
             <Button onClick={this.goBack}>Go Back</Button>
           </>
         ) : (
-          <>
-            <h3>Project Name: {projectId.slice(0, projectId.indexOf('-'))}</h3>
-            <h3>Project Id: {projectId}</h3>
-            <BackendBuilder style={{ marginBottom: '1rem' }} />
-            <FrontendBuilder />
-          </>
+          <Accordion items={[
+            { heading: 'Backend Builder', body: <BackendBuilder /> },
+            { heading: 'Frontend Builder', body: <FrontendBuilder /> },
+            { heading: 'Real Time Executer', body: <RealTimeBuilder /> }
+          ]} />
         )}
       </BuilderPageStyles.BuilderPageStyled>
     )

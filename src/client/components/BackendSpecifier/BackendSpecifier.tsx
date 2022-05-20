@@ -9,7 +9,7 @@ import DataModelForm from '../DataModelForm/DataModelForm'
 import Button from '../common/Button/Button'
 
 const getInputs = (artifactName: string, routesInitialValues: { [id: string]: boolean }) => [
-  { id: 'artifactName', label: 'Artifact Name', initialValue: artifactName || '' },
+  { id: 'artifactName', label: <h3>Artifact Name</h3>, initialValue: artifactName || '' },
   { id: 'item-get', type: 'checkbox', label: 'Get', initialValue: routesInitialValues['item-get'] },
   { id: 'item-post', type: 'checkbox', label: 'Post', initialValue: routesInitialValues['item-post'] },
   { id: 'item-patch', type: 'checkbox', label: 'Patch', initialValue: routesInitialValues['item-patch'] },
@@ -60,8 +60,8 @@ const BackendSpecifier: FunctionComponent<BackendSpecifierPropsModel> = (props):
         formSchema={{ inputs }}
         inputsContainerChildren={(
           <>
-            <div className='item-request-types-label'>Item Request Types</div>
-            <div className='list-request-types-label'>List Request Types</div>
+            <h3 className='item-request-types-label'>Item Request Types</h3>
+            <h3 className='list-request-types-label'>List Request Types</h3>
           </>
         )}
         submitHandler={(formState) => {
@@ -69,9 +69,9 @@ const BackendSpecifier: FunctionComponent<BackendSpecifierPropsModel> = (props):
         }}
         onFormStateChange={onFormStateChange}
       />
-      Data Model ({artifactName.current})
+      <h3>Data Model ({artifactName.current})</h3>
       <DataModelForm data={artifactData} setDataModelFormState={setDataModelFormState} />
-      <Button onClick={save}>Save</Button>
+      <Button onClick={save} className="save-button">Save</Button>
     </BackendSpecifierStyles.BackendSpecifierStyled>
   )
 }

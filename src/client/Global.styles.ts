@@ -19,6 +19,10 @@ const GlobalStyles = createGlobalStyle`
   a {
     text-decoration: none;
   }
+
+  h3 {
+    color: darkblue;
+  }
 `
 
 export default GlobalStyles

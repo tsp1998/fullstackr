@@ -122,6 +122,7 @@ const FrontendBuilder: FunctionComponent<FrontendBuilderPropsModel> = (props): J
       {...restProps}
     >
       <div>
+        <h2>Frontend Builder</h2>
         <Select
           options={components}
           id="component"

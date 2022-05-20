@@ -34,6 +34,8 @@ export const DataModelFormStyled = styled.div`
     display: flex;
     flex-wrap: wrap;
     li {
+      color: darkblue;
+      font-size: 1.8rem;
       margin: 0 1rem;
       width: 20%;
       :first-child {

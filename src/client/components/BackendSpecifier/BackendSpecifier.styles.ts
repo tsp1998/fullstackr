@@ -4,6 +4,15 @@ import { BackendSpecifierPropsModel } from './BackendSpecifier.models'
 export const BackendSpecifierStyled = styled.div<Partial<BackendSpecifierPropsModel>>`
   padding: 1rem;
 
+  button {
+    margin-top: .5rem;
+    padding: .5rem 2rem;
+  }
+
+  .save-button {
+    padding: 1rem 4rem;
+  }
+
   form {
     .form-inputs-container {
       display: flex;

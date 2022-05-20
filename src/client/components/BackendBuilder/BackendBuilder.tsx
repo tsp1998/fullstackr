@@ -118,6 +118,7 @@ const BackendBuilder: FunctionComponent<BackendBuilderPropsModel> = (props): JSX
       {...restProps}
     >
       <div>
+        <h2>Backend Builder</h2>
         <Select
           options={artifacts}
           id="artifact"

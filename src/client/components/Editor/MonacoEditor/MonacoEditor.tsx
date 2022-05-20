@@ -8,6 +8,7 @@ import prettier from 'prettier';
 import parser from 'prettier/parser-babel';
 import codeShift from 'jscodeshift';
 import Highlighter from 'monaco-jsx-highlighter';
+import { Button } from '../../common'
 
 const MonacoEditor: FunctionComponent<MonacoEditorPropsModel> = (props): JSX.Element => {
   const {
@@ -43,30 +44,35 @@ const MonacoEditor: FunctionComponent<MonacoEditorPropsModel> = (props): JSX.Ele
     changeHandler(value!);
   }
 
+  const formatCode = () => {
+    try {
+      let plugins: Array<string | prettier.Plugin<any>> = []
+      if (language === 'json') {
+        plugins.push(parser) // TODO: check for json parser
+      } else {
+        plugins.push(parser)
+      }
+      const formattedValue = prettier.format(initialValue, {
+        parser: 'json',
+        plugins
+      })
+      if (editorRef.current) {
+        editorRef.current.setValue(formattedValue)
+      }
+    } catch (error) {
+      console.log(`error`, error)
+    }
+  }
+
   useEffect(() => {
     if (format) {
-      try {
-        let plugins: Array<string | prettier.Plugin<any>> = []
-        if (language === 'json') {
-          plugins.push(parser) // TODO: check for json parser
-        } else {
-          plugins.push(parser)
-        }
-        const formattedValue = prettier.format(initialValue, {
-          parser: 'json',
-          plugins
-        })
-        if (editorRef.current) {
-          editorRef.current.setValue(formattedValue)
-        }
-      } catch (error) {
-        console.log(`error`, error)
-      }
+      formatCode()
     }
   }, [initialValue])
 
   return (
     <MonacoEditorStyles.MonacoEditorStyled className="monaco-editor-container">
+      <Button>Format</Button>
       <MonacoEditorOriginal
         className={`monaco-editor ${className}`}
         value={initialValue}
@@ -80,6 +86,7 @@ const MonacoEditor: FunctionComponent<MonacoEditorPropsModel> = (props): JSX.Ele
           scrollBeyondLastLine: false,
           automaticLayout: true,
           tabSize: 2,
+          minimap: { enabled: false },
           ...options
         }}
         onMount={onMountHandler}

@@ -13,6 +13,14 @@ export const HeaderStyled = styled.header`
     color: #fff;
     margin: 0 1rem;
   }
+
+  .project-info {
+    display: flex;
+    font-size: 2rem;
+    > * {
+      margin: 0 .2rem;
+    }
+  }
 `
 
 export const Brand = styled.h1`

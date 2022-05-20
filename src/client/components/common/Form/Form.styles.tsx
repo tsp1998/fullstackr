@@ -5,6 +5,10 @@ export const FormStyled = styled.form<Partial<FormPropsModel>>`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+
+  > * {
+    margin: .2rem 0;
+  }
 `
 
 export const FormInputsContainer = styled.div`

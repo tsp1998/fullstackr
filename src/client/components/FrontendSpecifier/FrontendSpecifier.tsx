@@ -68,7 +68,7 @@ const FrontendSpecifier: FunctionComponent<FrontendSpecifierPropsModel> = (props
         onFormStateChange={onFormStateChange}
       />
       <DataModelForm data={componentData} setDataModelFormState={setDataModelFormState} />
-      <Button onClick={save}>Save</Button>
+      <Button onClick={save} className="save-button">Save</Button>
     </FrontendSpecifierStyles.FrontendSpecifierStyled>
   )
 }
