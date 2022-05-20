@@ -53,7 +53,7 @@ export class BuilderPage extends Component<BuilderPagePropsModel, BuilderPageSta
             <Button onClick={this.goBack}>Go Back</Button>
           </>
         ) : (
-          <Accordion items={[
+          <Accordion noOtherCollapse={true} items={[
             { heading: 'Backend Builder', body: <BackendBuilder /> },
             { heading: 'Frontend Builder', body: <FrontendBuilder /> },
             { heading: 'Real Time Executer', body: <RealTimeBuilder /> }
