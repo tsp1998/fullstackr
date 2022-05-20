@@ -51,8 +51,6 @@ const Utilizer: FunctionComponent<UtilizerPropsModel> = (props): JSX.Element => 
     componentData.schema[key] = jsonResult || componentData.schema[key];
   })
 
-  console.log(`componentData`, componentData)
-
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <UtilizerStyled className={`utilizer ${className}`} {...restProps}>
