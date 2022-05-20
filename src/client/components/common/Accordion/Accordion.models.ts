@@ -9,4 +9,5 @@ export interface AccordionItemModel {
 export interface AccordionPropsModel extends ComponentPropsWithRef<'ul'> {
   items: Array<AccordionItemModel>;
   expanedItemIndex?: number;
+  noOtherCollapse?: boolean;
 }

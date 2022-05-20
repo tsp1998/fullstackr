@@ -22,7 +22,7 @@ const Table: FunctionComponent<TablePropsModel> = (props): JSX.Element => {
       {rows.length && (
         <TableStyles.TableBody className='table-body'>
           {rows.map((row, i) => (
-            <TableStyles.TableRow key={i} className='table-row'>
+            <TableStyles.TableRow key={i} className='table-row' style={{background: i %2  === 0? '#eee': '#fff'}}>
               {row.map((cell, j) => (
                 <TableStyles.TableCell key={`${i}${j}`} className='table-cell'>
                   {cell as JSX.Element}

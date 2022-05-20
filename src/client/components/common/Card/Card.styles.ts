@@ -12,6 +12,7 @@ export const CardStyled = styled.div<Partial<CardPropsModel>>`
 
 export const CardHeader = styled.div`
   height: 10%;
+  margin: 1rem 0;
 `
 
 export const CardContent = styled.div`
@@ -22,4 +23,5 @@ export const CardContent = styled.div`
 
 export const CardFooter = styled.div`
   height: 10%;
+  margin: 1rem 0;
 `

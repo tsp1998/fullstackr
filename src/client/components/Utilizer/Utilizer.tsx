@@ -44,13 +44,15 @@ const Utilizer: FunctionComponent<UtilizerPropsModel> = (props): JSX.Element => 
   }, [componentData])
   
   Object.keys(componentData.schema).forEach(key => {
-    let evalResult;
+    let jsonResult;
     try {
-      evalResult = eval(componentData.schema[key])
+      jsonResult = JSON.parse(componentData.schema[key])
     } catch (error) {}
-    componentData.schema[key] = evalResult || componentData.schema[key];
+    componentData.schema[key] = jsonResult || componentData.schema[key];
   })
-  
+
+  console.log(`componentData`, componentData)
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <UtilizerStyled className={`utilizer ${className}`} {...restProps}>

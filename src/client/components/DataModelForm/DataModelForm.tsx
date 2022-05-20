@@ -43,13 +43,22 @@ const DataModelForm: FunctionComponent<DataModelFormPropsModel> = (props): JSX.E
     setDataModelFormState([...formsDatas.current])
   }
 
+  const timer = useRef<any>()
   const codeEditorChangeHandler = (index: number, value: string) => {
-    if (formsDatas.current[index]) {
-      formsDatas.current[index]._default = value
-      inputsSets[index][3].initialValue = value
-      setInputsSets([...inputsSets])
-      setDataModelFormState([...formsDatas.current])
-    }
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => {
+      let jsonResult;
+      try {
+        jsonResult = JSON.stringify(JSON.parse(value))
+      } catch (error) { }
+      value = jsonResult || value
+      if (formsDatas.current[index]) {
+        formsDatas.current[index]._default = value
+        inputsSets[index][3].initialValue = value
+        setInputsSets([...inputsSets])
+        setDataModelFormState([...formsDatas.current])
+      }
+    }, 1000)
   }
 
   const addPropHandler = () => {
@@ -103,6 +112,8 @@ const DataModelForm: FunctionComponent<DataModelFormPropsModel> = (props): JSX.E
             <MonacoEditor
               initialValue={formsDatas.current[i] && formsDatas.current[i]._default as string}
               syntaxValidation={false}
+              format={true}
+              language="json"
               changeHandler={value => codeEditorChangeHandler(i, value)}
             />
           )}

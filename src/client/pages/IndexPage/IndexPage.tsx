@@ -16,6 +16,7 @@ import restApi from '../../apis/rest'
 //components
 import Select from '../../components/common/Select/Select'
 import Button from '../../components/common/Button/Button'
+import Tester from '../../Tester'
 
 export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, IndexPageModels.IndexPageStateModel> {
   constructor(props: IndexPageModels.IndexPagePropsModel) {
@@ -84,6 +85,7 @@ export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, In
           onApiTrigger={this.onApiTrigger}
           wantMessage={true}
         />
+        {/* <Tester /> */}
       </IndexPageStyles.IndexPageStyled>
     )
   }
