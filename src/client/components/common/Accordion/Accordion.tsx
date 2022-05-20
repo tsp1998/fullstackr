@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import { AccordionPropsModel } from './Accordion.models'
 import * as AccordionStyles from './Accordion.styles'
 //components
@@ -7,8 +7,12 @@ import Icon from '../Icon/Icon'
 import arrowIcon from '../../../assets/icons/arrow.svg'
 
 const Accordion: FunctionComponent<AccordionPropsModel> = (props): JSX.Element => {
-  const { className = '', items = [], ...restProps } = props;
-  const [expanedItemIndex, setExpanedItemIndex] = useState(0);
+  const { className = '', items = [], expanedItemIndex: expanedItemIndexFromProps, ...restProps } = props;
+  const [expanedItemIndex, setExpanedItemIndex] = useState(expanedItemIndexFromProps);
+  
+  useEffect(() => {
+    setExpanedItemIndex(expanedItemIndexFromProps)
+  }, [expanedItemIndexFromProps])
 
   const changeExpanedItemIndexHandler = (index: number) => {
     setExpanedItemIndex(index === expanedItemIndex ? -1 : index);
@@ -17,7 +21,7 @@ const Accordion: FunctionComponent<AccordionPropsModel> = (props): JSX.Element =
   return (
     <AccordionStyles.AccordionStyled className={`accordion ${className}`} {...restProps}>
       {items.map((item, i) => (
-        <AccordionStyles.AccordionItem key={i} className="accordion-item">
+        <AccordionStyles.AccordionItem key={i} className={`accordion-item ${item.className || ''}`}>
           <AccordionStyles.AccordionItemHeading className='accordion-item-heading'>
             <Icon
               className={i === expanedItemIndex ? '' : 'rotate'}

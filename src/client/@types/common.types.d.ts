@@ -7,4 +7,11 @@ declare namespace CommonTypes {
     label?: string | JSX.Element;
     placeholder?: string;
   }
+
+  export interface ComponentDataModel {
+    name: string;
+    schema: {
+      [propName: string]: any
+    }
+  }
 }

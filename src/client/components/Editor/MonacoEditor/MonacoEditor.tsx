@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useRef } from 'react'
+import React, { FunctionComponent, useEffect, useRef } from 'react'
 import { MonacoEditorPropsModel } from './MonacoEditor.models'
 import * as MonacoEditorStyles from './MonacoEditor.styles'
 //components
@@ -15,12 +15,20 @@ const MonacoEditor: FunctionComponent<MonacoEditorPropsModel> = (props): JSX.Ele
     changeHandler = () => undefined,
     initialValue = '',
     options = {},
+    format = false,
+    syntaxValidation = true,
     language = "typescript",
     ...restProps
   } = props;
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null)
   const onMountHandler = (editor: monaco.editor.IStandaloneCodeEditor, monaco: any) => {
     editorRef.current = editor;
+    if (!syntaxValidation) {
+      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+        noSemanticValidation: true,
+        noSyntaxValidation: true,
+      });
+    }
     // // @ts-ignore
     // const highlighter = new Highlighter(window.monaco,codeShift,editor)
     // highlighter.highLightOnDidChangeModelContent(
@@ -34,6 +42,28 @@ const MonacoEditor: FunctionComponent<MonacoEditorPropsModel> = (props): JSX.Ele
   const onChangeHandler = (value: string | undefined, ev: monaco.editor.IModelContentChangedEvent) => {
     changeHandler(value!);
   }
+
+  useEffect(() => {
+    if (format) {
+      try {
+        let plugins: Array<string | prettier.Plugin<any>> = []
+        if (language === 'json') {
+          plugins.push(parser) // TODO: check for json parser
+        } else {
+          plugins.push(parser)
+        }
+        const formattedValue = prettier.format(initialValue, {
+          parser: 'json',
+          plugins
+        })
+        if (editorRef.current) {
+          editorRef.current.setValue(formattedValue)
+        }
+      } catch (error) {
+        console.log(`error`, error)
+      }
+    }
+  }, [initialValue])
 
   return (
     <MonacoEditorStyles.MonacoEditorStyled className="monaco-editor-container">

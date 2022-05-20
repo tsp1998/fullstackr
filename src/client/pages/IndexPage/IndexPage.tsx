@@ -45,6 +45,22 @@ export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, In
     this.setState({ redirectPath: this.state.selectedProject })
   }
 
+  onApiTrigger = async (apiRequest: Promise<APITypes.ResponseModel>) => {
+    try {
+      const response = await apiRequest
+      if (response.status === 'error') {
+        throw new Error((response.data as any).message)
+      }
+      const {projectId} = response.data as {projectId: string}
+      const projectName = projectId.slice(0, projectId.indexOf('-'));
+      this.setState({projects: [...this.state.projects, {
+        text: projectName, value: projectId
+      }]})
+    } catch (error) {
+      console.log(`error`, error)
+    }
+  }
+
   render() {
     const { redirectPath = '' } = this.state;
     return (
@@ -65,6 +81,7 @@ export class IndexPage extends Component<IndexPageModels.IndexPagePropsModel, In
             buttons: [{ children: 'Create Project', type: 'submit' }]
           }}
           api={`${API}/create-project`}
+          onApiTrigger={this.onApiTrigger}
           wantMessage={true}
         />
       </IndexPageStyles.IndexPageStyled>

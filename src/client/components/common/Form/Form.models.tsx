@@ -25,7 +25,7 @@ export interface FormPropsModel extends ComponentPropsWithRef<'form'> {
   buttonsContainerChildren?: JSX.Element;
   submitHandler?: (trimmedFormState: TrimmedFormState) => Promise<boolean>;
   api?: string;
-  onApiTrigger?: (apiRequest: Promise<APITypes.ResponseDataType | null>) => void;
+  onApiTrigger?: (apiRequest: Promise<APITypes.ResponseModel>) => void;
   onFormStateChange?: (trimmedFormState: TrimmedFormState) => void;
   defaultSuccessMessage?: string;
   defaultErrorMessage?: string;

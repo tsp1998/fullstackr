@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import { BackendPreviewPropsModel } from './BackendPreview.models'
+import { FrontendPreviewPropsModel } from './FrontendPreview.models'
 
-export const BackendPreviewStyled = styled.div<Partial<BackendPreviewPropsModel>>`
+export const FrontendPreviewStyled = styled.div<Partial<FrontendPreviewPropsModel>>`
   padding: 1rem;
 
   .accordion {

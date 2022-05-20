@@ -3,6 +3,7 @@ import { BuilderPagePropsModel, BuilderPageStateModel } from './BuilderPage.mode
 import * as BuilderPageStyles from './BuilderPage.styles'
 //components
 import BackendBuilder from '../../components/BackendBuilder/BackendBuilder'
+import FrontendBuilder from '../../components/FrontendBuilder/FrontendBuilder'
 import Redirect from '../../components/Redirect/Redirect'
 //api
 import restApi from '../../apis/rest'
@@ -55,7 +56,8 @@ export class BuilderPage extends Component<BuilderPagePropsModel, BuilderPageSta
           <>
             <h3>Project Name: {projectId.slice(0, projectId.indexOf('-'))}</h3>
             <h3>Project Id: {projectId}</h3>
-            <BackendBuilder />
+            {/* <BackendBuilder /> */}
+            <FrontendBuilder />
           </>
         )}
       </BuilderPageStyles.BuilderPageStyled>

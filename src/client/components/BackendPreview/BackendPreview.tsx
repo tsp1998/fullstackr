@@ -73,18 +73,30 @@ const BackendPreview: FunctionComponent<BackendPreviewPropsModel> = (props): JSX
     setPatchData('')
   }, [formState])
 
+  const ids = Object.keys(restFormState);
+
+  let expanedItemIndex = ids.indexOf('list-get')  
+  if (expanedItemIndex === -1) {
+    expanedItemIndex = ids.indexOf('item-get')
+  }
+  if (expanedItemIndex === -1) {
+    expanedItemIndex = 0
+  }
+
   return (
     <BackendPreviewStyles.BackendPreviewStyled
       className={`backend-preview ${className}`}
       {...restProps}
     >
       <Accordion
+        expanedItemIndex={expanedItemIndex}
         items={
-          Object.keys(restFormState).reduce(
+          ids.reduce(
             (acc: Array<AccordionItemModel>, id: string): Array<AccordionItemModel> => {
               const [dataType, requestType] = id.split('-')
               if ((restFormState[id] as any).value) {
                 return [...acc, {
+                  className: id,
                   heading: (
                     <div className='accordion-item-heading-wrapper'>
                       <div className='route'>
@@ -117,7 +129,7 @@ const BackendPreview: FunctionComponent<BackendPreviewPropsModel> = (props): JSX
                       <MonacoEditor
                         {...(requestType === 'post' ? { changeHandler: setPostData } : {})}
                         {...(requestType === 'post' ? { initialValue: postData } : {})}
-                        {...(requestType === 'get' || requestType === 'delete' ? { initialValue: responses[id] || '' } : {})}
+                        {...(requestType === 'get' || requestType === 'delete' ? { initialValue: responses[id] || '', format: true } : {})}
                         {...(requestType === 'patch' ? { changeHandler: setPatchData } : {})}
                         {...(requestType === 'patch' ? { initialValue: patchData } : {})}
                         language='json'
@@ -128,6 +140,7 @@ const BackendPreview: FunctionComponent<BackendPreviewPropsModel> = (props): JSX
                           language='json'
                           initialValue={responses[id] || ''}
                           options={{ readOnly: true }}
+                          format
                         />
                       )}
                     </>

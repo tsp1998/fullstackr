@@ -18,7 +18,7 @@ const ListWithFetch: FunctionComponent<ListWithFetchPropsModel> = (props): JSX.E
       requestType: 'get',
       requestBody: { api: props.api }
     });
-  }, [])
+  }, [props.api])
 
   return (
     <List items={data || []} loading={loading} {...props} />
