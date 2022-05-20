@@ -13,14 +13,26 @@ const getRouteName = (artifactName: string, id: string) => {
 }
 
 const FrontendPreview: FunctionComponent<FrontendPreviewPropsModel> = (props): JSX.Element => {
-  const { className = '', componentData, ...restProps } = props;
+  const { className = '', formState, dataModelFormState, ...restProps } = props;
+  let componentData: CommonTypes.ComponentDataModel;
+  try {
+    componentData = {
+      name: (formState.componentName as any).value,
+      schema: dataModelFormState.reduce((acc, propData) => ({
+        ...acc,
+        [propData.propName as string]: propData._default
+      }), {})
+    }
+  } catch (error) {
+    console.log(`error`, error)
+  }
 
   return (
     <FrontendPreviewStyles.FrontendPreviewStyled
       className={`backend-preview ${className}`}
       {...restProps}
     >
-      {componentData ? (
+      {componentData! ? (
         <Utilizer componentData={componentData} />
       ) : (
         <h2>No Component Data / Invalid Component Data</h2>

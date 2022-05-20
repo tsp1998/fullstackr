@@ -14,7 +14,7 @@ interface UtilizerPropsModel extends ComponentPropsWithRef<'div'> {
 
 const Utilizer: FunctionComponent<UtilizerPropsModel> = (props): JSX.Element => {
   const { className = '', componentData, ...restProps } = props;
-
+  
   if (!componentData.name) {
     return <></>
   }

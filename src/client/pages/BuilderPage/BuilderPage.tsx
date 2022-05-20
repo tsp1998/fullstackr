@@ -56,7 +56,7 @@ export class BuilderPage extends Component<BuilderPagePropsModel, BuilderPageSta
           <>
             <h3>Project Name: {projectId.slice(0, projectId.indexOf('-'))}</h3>
             <h3>Project Id: {projectId}</h3>
-            {/* <BackendBuilder /> */}
+            <BackendBuilder style={{ marginBottom: '1rem' }} />
             <FrontendBuilder />
           </>
         )}

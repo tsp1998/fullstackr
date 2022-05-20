@@ -36,7 +36,7 @@ export const FrontendSpecifierStyled = styled.div<Partial<FrontendSpecifierProps
   .data-model-form {
     .properties-list {
       li {
-        :nth-child(2), :nth-child(3) {
+        :nth-child(3), :nth-child(4) {
           display: none;
         }
       }

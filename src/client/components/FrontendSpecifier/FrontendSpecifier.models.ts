@@ -6,4 +6,5 @@ export interface FrontendSpecifierPropsModel extends ComponentPropsWithRef<'div'
   setDataModelFormState?: (formsDatas: Array<TrimmedFormState>) => void;
   componentData: CommonTypes.ComponentDataModel | null;
   save: Function;
+  componentNameToStore?: string;
 }

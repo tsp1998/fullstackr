@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react'
+import React, { FunctionComponent, useEffect, useMemo, useRef, useState } from 'react'
 import * as FrontendSpecifierStyles from './FrontendSpecifier.styles'
 //models
 import { FrontendSpecifierPropsModel } from './FrontendSpecifier.models'
@@ -12,8 +12,31 @@ const commonComponentNames = [
   'Accordion', 'Button', 'Card', 'Form', 'Icon', 'Input', 'Item', 'List', 'ListWithFetch', 'Spinner', 'Modal', 'BackDrop', 'ModalContainer', 'Select', 'Table', 'Textarea',
 ]
 
+const getInputs = (componentNameToStore: string, componentName: string): Array<FormInputModel> => [
+  {
+    id: 'componentName',
+    label: 'Component Name',
+    inputComponentType: 'select',
+    initialValue: componentName || '',
+    options: [
+      { text: 'Select Component', value: '' },
+      ...commonComponentNames.map(componentName => ({
+        text: componentName, value: componentName
+      }))
+    ]
+  },
+  { id: 'componentNameToStore', label: 'Component Name (To Store)', initialValue: componentNameToStore || '' }
+]
+
 const FrontendSpecifier: FunctionComponent<FrontendSpecifierPropsModel> = (props): JSX.Element => {
-  const { className = '', setDataModelFormState, componentData, ...restProps } = props;
+  const {
+    className = '',
+    setDataModelFormState,
+    componentData,
+    componentNameToStore,
+    ...restProps
+  } = props;
+
 
   const onFormStateChange = (formState: TrimmedFormState) => {
     props.onFormStateChange!(formState)
@@ -23,24 +46,14 @@ const FrontendSpecifier: FunctionComponent<FrontendSpecifierPropsModel> = (props
     props.save()
   }
 
-  const [inputs, setInputs] = useState<Array<FormInputModel>>([
-    {
-      id: 'componentName',
-      label: 'Component Name',
-      inputComponentType: 'select',
-      options: [
-        { text: 'Select Component', value: '' },
-        ...commonComponentNames.map(componentName => ({
-          text: componentName, value: componentName
-        }))
-      ]
-    }
-  ])
-
-  // useEffect(() => {
-  //   const inputs = getInputs(data?.name || '', routesInitialValues);
-  //   setInputs(inputs)
-  // }, [data])
+  const [inputs, setInputs] = useState<Array<FormInputModel>>(
+    getInputs(componentNameToStore || '', componentData ? componentData.name : '')
+  )
+  
+  useEffect(() => {
+    const newInputs = getInputs(componentNameToStore || '', componentData ? componentData.name : '');
+    setInputs(newInputs)
+  }, [componentData])
 
   return (
     <FrontendSpecifierStyles.FrontendSpecifierStyled
@@ -49,12 +62,6 @@ const FrontendSpecifier: FunctionComponent<FrontendSpecifierPropsModel> = (props
     >
       <Form
         formSchema={{ inputs }}
-        inputsContainerChildren={(
-          <>
-            <div className='item-request-types-label'>Item Request Types</div>
-            <div className='list-request-types-label'>List Request Types</div>
-          </>
-        )}
         submitHandler={(formState) => {
           return Promise.resolve(true);
         }}

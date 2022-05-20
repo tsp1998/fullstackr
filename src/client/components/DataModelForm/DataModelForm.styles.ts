@@ -7,9 +7,10 @@ export const DataModelFormStyled = styled.div`
     flex-direction: row;
     
     .form-inputs-container {
+      width: 80%;
       order: 2;
       > * {
-        width: 25% !important;
+        width: 20% !important;
         margin: .5rem 1rem;
         input {
           width: 100%;

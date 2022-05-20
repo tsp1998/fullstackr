@@ -70,7 +70,7 @@ const BackendSpecifier: FunctionComponent<BackendSpecifierPropsModel> = (props):
         onFormStateChange={onFormStateChange}
       />
       Data Model ({artifactName.current})
-      <DataModelForm artifactData={artifactData} setDataModelFormState={setDataModelFormState} />
+      <DataModelForm data={artifactData} setDataModelFormState={setDataModelFormState} />
       <Button onClick={save}>Save</Button>
     </BackendSpecifierStyles.BackendSpecifierStyled>
   )

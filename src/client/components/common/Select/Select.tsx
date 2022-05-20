@@ -12,6 +12,7 @@ const Select: FunctionComponent<SelectPropsModel> = (props): JSX.Element => {
     ...restProps
   } = props;
   const [value, setValue] = useState(initialValue || '');
+
   useEffect(() => {
     if (!value && !defaultOptionText) {
       const { value } = options[0]
@@ -19,10 +20,15 @@ const Select: FunctionComponent<SelectPropsModel> = (props): JSX.Element => {
       changeHandler(value, props.id)
     }
   }, [])
+
+  useEffect(() => {
+    setValue(initialValue as string)
+  }, [initialValue])
+
   return (
     <SelectStyles.SelectStyled
       className={`select ${className}`}
-      value={value}
+      value={value as string}
       onChange={event => {
         const { target: { value } } = event;
         setValue(value);

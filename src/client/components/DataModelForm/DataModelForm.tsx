@@ -63,7 +63,7 @@ const DataModelForm: FunctionComponent<DataModelFormPropsModel> = (props): JSX.E
       inputsSet[0].initialValue = propName;
       inputsSet[1].initialValue = (schema[propName] as any).type;
       inputsSet[2].initialValue = (schema[propName] as any).required;
-      inputsSet[3].initialValue = (schema[propName] as any).default;
+      inputsSet[3].initialValue = typeof schema[propName] === 'string' ? schema[propName] : (schema[propName] as any).default;
       return [...acc, inputsSet]
     }, [])
     formsDatas.current = []
